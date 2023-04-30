@@ -1,0 +1,62 @@
+<head>
+    <script>
+        // 로컬 스토리지에서 댓글 목록을 가져오기
+        let comments = JSON.parse(localStorage.getItem("comments")) || [];
+
+        // 댓글 등록 버튼을 클릭하면 실행되는 함수
+        function submitComment() {
+            // 입력된 댓글 내용과 작성자 이름 가져오기
+            const name = document.getElementById("name").value;
+            const comment = document.getElementById("comment").value;
+
+            // 댓글 목록에 추가하기
+            comments.push({ name, comment });
+
+            // 로컬 스토리지에 댓글 목록 저장하기
+            localStorage.setItem("comments", JSON.stringify(comments));
+
+            // 입력 폼 초기화하기
+            document.getElementById("name").value = "";
+            document.getElementById("comment").value = "";
+
+            // 댓글 목록 업데이트하기
+            updateCommentList();
+        }
+
+        // 댓글 목록을 업데이트하는 함수
+        function updateCommentList() {
+            const commentList = document.getElementById("comment-list").querySelector("ul");
+
+            // 댓글 목록 초기화하기
+            commentList.innerHTML = "";
+
+            // 댓글 목록 추가하기
+            comments.forEach(comment => {
+                const li = document.createElement("li");
+                li.innerText = `${comment.name}: ${comment.comment}`;
+                commentList.appendChild(li);
+            });
+        }
+
+        // 페이지 로딩 시 댓글 목록 업데이트하기
+        updateCommentList();
+    </script>
+</head>
+
+<body>
+    <form style="margin-left: 10px;" id="comment-form">
+        <label for="name" style="font-size: 1.25em;">Nickname:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        <label for="comment" style="font-size: 1.25em;" required>Comment:</label><br>
+        <textarea id="comment" name="comment" rows="4" cols="50"></textarea><br><br>
+
+        <input type="submit" value="Leave a comment" style="font-size: 1.25em;" class="pointer"
+            onclick="submitComment()">
+    </form>
+    <div id="comment-list">
+        <h2>Comment list</h2>
+        <ul>
+            <!-- 이곳에 댓글 목록이 추가됩니다 -->
+        </ul>
+    </div>
+</body>
