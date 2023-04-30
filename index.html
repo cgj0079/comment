@@ -1,7 +1,7 @@
 <head>
     <script>
-        // 댓글 목록을 저장할 배열
-        let comments = [];
+        // 로컬 스토리지에서 댓글 목록을 가져오기
+        let comments = JSON.parse(localStorage.getItem("comments")) || [];
 
         // 댓글 등록 버튼을 클릭하면 실행되는 함수
         function submitComment() {
@@ -11,6 +11,9 @@
 
             // 댓글 목록에 추가하기
             comments.push({ name, comment });
+
+            // 로컬 스토리지에 댓글 목록 저장하기
+            localStorage.setItem("comments", JSON.stringify(comments));
 
             // 입력 폼 초기화하기
             document.getElementById("name").value = "";
@@ -24,6 +27,8 @@
         function updateCommentList() {
             const commentList = document.getElementById("comment-list").querySelector("ul");
 
+            // 댓글 목록 초기화하기
+            commentList.innerHTML = "";
 
             // 댓글 목록 추가하기
             comments.forEach(comment => {
@@ -33,9 +38,11 @@
             });
         }
 
-        window.onload = function() {
-            // 페이지 로드 시 댓글 목록 업데이트하기
-            updateCommentList();
+        // 페이지 로딩 시 댓글 목록 업데이트하기
+        updateCommentList();
+        
+        window.onload=function(){
+            updateCommmentList();
         }
     </script>
 </head>
